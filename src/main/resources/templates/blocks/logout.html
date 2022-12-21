@@ -1,0 +1,15 @@
+<!--<div th:fragment="logout (path)" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<!--    <form th:action="${path}" th:method="post">-->
+<!--        <span sec:authorize="isAuthenticated()">-->
+<!--            <span sec:authentication="name"></span>-->
+<!--            <span sec:authentication="principal.authorities"></span>-->
+<!--        </span>-->
+<!--        <button class="btn btn-primary" type="submit" th:text="${#request.userPrincipal}?'Sign Out':'Log In'"></button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<div th:fragment="logout">
+    <form th:action="@{/logout}" th:method="post">
+       <button class="btn btn-primary" type="submit">Sign Out</button>
+    </form>
+</div>

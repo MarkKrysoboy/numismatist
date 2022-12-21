@@ -25,9 +25,6 @@ public class WebSecurityConfig {
         this.userService = userService;
     }
 
-    @Autowired
-    UserRepo userRepo;
-
     @Bean
     PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder(8);

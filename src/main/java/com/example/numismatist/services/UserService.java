@@ -21,8 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepo userRepository;
+    private final UserRepo userRepository;
+
+    public UserService(UserRepo userRepository) {
+        this.userRepository = userRepository;
+    }
 
 //    @Autowired
 //    private MailSander mailSander;

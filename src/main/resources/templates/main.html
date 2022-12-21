@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Getting Started: Serving Web Content</title>
-</head>
-<h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<form th:method="get" th:action="main" class="row g-3">
-    <div class="col-auto">
-        <input th:type="text" th:name="filter" class="form-control" th:value="${filter}"
-               placeholder="Search by tag"/>
+    <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
+    <div th:insert="~{blocks/logout :: logout}"></div>
+
+    <form th:method="get" th:action="main" class="row g-3">
+        <div class="col-auto">
+            <input th:type="text" th:name="filter" class="form-control" th:value="${filter}"
+                   placeholder="Search by tag"/>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary mb-3" type="submit">Search</button>
+        </div>
+    </form>
+    <div>Messages list</div>
+    <div th:each="coin : ${coins}" class="alert alert-into mt-2">
+        <b th:text="${coin.id}"></b>
+        <b th:text="${coin.name}"></b>
+        <b th:text="${coin.series.series}"></b>
     </div>
-    <div class="col-auto">
-        <button class="btn btn-primary mb-3" type="submit">Search</button>
-    </div>
-</form>
-<div>Messages list</div>
-<div th:each="coin : ${coins}" class="alert alert-into mt-2">
-    <b th:text="${coin.id}"></b>
-    <b th:text="${coin.name}"></b>
-    <b th:text="${coin.series.series}"></b>
+
 </div>
-</body>
-</html>
