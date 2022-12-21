@@ -1,0 +1,40 @@
+<!--<!DOCTYPE HTML>-->
+<!--<html lang="en"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="blocks/maket">-->
+<!--<div layout:fragment="content">-->
+
+<!--&lt;!&ndash;    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}" th:if="${#session} and ${session['SPRING_SECURITY_LAST_EXCEPTION']}">&ndash;&gt;-->
+<!--    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"-->
+<!--         th:if="${session} and ${param.error}">-->
+<!--    </div>-->
+
+<!--    <div th:class="'alert alert-' + ${messageType}" role="alert" th:if="${message}">-->
+<!--        <div th:text="${message}" th:unless=null></div>-->
+<!--    </div>-->
+
+<!--    <div th:insert="~{blocks/login :: login (@{/login}, false)}"></div>-->
+
+<!--</div>-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Spring Security Example </title>
+</head>
+<body>
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+Login page
+<form th:action="@{/login}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
+</form>
+<a href="/registration">Add new User</a>
+</body>
+</html>
