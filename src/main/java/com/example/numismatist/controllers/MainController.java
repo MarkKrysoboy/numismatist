@@ -27,10 +27,4 @@ public class MainController {
         return "main";
     }
 
-//    @GetMapping("/main")
-//    public String main(Model model) {
-//        Iterable<Coin> coins = coinRepo.findAll();
-//        model.addAttribute("coins", coins);
-//        return "main";
-//    }
 }

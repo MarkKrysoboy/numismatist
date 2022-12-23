@@ -1,5 +1,5 @@
 package com.example.numismatist.enteties;
-
+;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

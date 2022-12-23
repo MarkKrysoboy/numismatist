@@ -1,0 +1,16 @@
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
+
+    <h2>User editor</h2>
+    <form th:action="${user}" th:method="post">
+        <input type="hidden" name="_method" value="patch"/>
+        <input th:type="text" th:name="username" th:value="${user.username}"/>
+        <div th:each="rol : ${roles}">
+            <label><input th:type="checkbox" th:name="${rol}"
+                          th:checked="${user.roles.contains(rol)}"/>[[${rol}]]</label>
+        </div>
+
+        <input th:type="hidden" th:name="id" th:value="${user}?${user.id}:''"/><br/>
+        <button type="submit">Save</button>
+    </form>
+
+</div>

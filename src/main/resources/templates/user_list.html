@@ -1,0 +1,23 @@
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
+
+    <h2>Users list</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <div th:each="us : ${users}">
+            <tr>
+                <td th:text="${us.username}"></td>
+                <td th:each="rol : ${us.roles}" th:text="${rol} + ' '"></td>
+                <td><a th:href="@{'/user/' + ${us.id}}">Edit</a></td>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,46 @@
+<div th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Numismatist</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/main">Coins</a>
+                    </li>
+                    <div sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">My coins</a>
+                            <!--                            <a class="nav-link" aria-current="page"-->
+                            <!--                               th:href="'/user_messages/' + ${currentUser.id}">My coins</a>-->
+                        </li>
+                    </div>
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/user">User list</a>
+                        </li>
+                    </div>
+                    <div sec:authorize="hasAuthority('USER')">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/user/profile">Profile</a>
+                        </li>
+                    </div>
+                </ul>
+
+                <div class="navbar-text">
+                    <div th:insert="~{blocks/logout :: logout}"></div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+</div>

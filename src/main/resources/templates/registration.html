@@ -9,7 +9,7 @@
 
 <!--</div>-->
 
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
 
     <div th:if="${param.error}">
         Invalid username and password.
@@ -17,7 +17,7 @@
     <div th:if="${param.logout}">
         You have been logged out.
     </div>
-    Add new User
+    <div class="s-1">Add new User</div>
     <div th:text="${message}" th:unless=null></div>
     <div th:insert="~{blocks/login :: login (@{/registration}, true)}"></div>
 

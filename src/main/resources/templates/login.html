@@ -2,7 +2,7 @@
 <!--<html lang="en"-->
 <!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
 <!--      layout:decorate="blocks/maket">-->
-<!--<div layout:fragment="content">-->
+<!--&lt;!&ndash;<div layout:fragment="content">&ndash;&gt;-->
 
 <!--&lt;!&ndash;    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}" th:if="${#session} and ${session['SPRING_SECURITY_LAST_EXCEPTION']}">&ndash;&gt;-->
 <!--    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"-->
@@ -17,7 +17,7 @@
 
 <!--</div>-->
 
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
 
     <div th:if="${param.error}">
         Invalid username and password.
@@ -25,8 +25,6 @@
     <div th:if="${param.logout}">
         You have been logged out.
     </div>
-    Login page
     <div th:insert="~{blocks/login :: login (@{/login}, false)}"></div>
-    <a href="/registration">Add new User</a>
 
 </div>

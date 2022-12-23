@@ -1,11 +1,8 @@
 package com.example.numismatist.enteties;
 
 import jakarta.persistence.*;
-import jdk.jfr.DataAmount;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Date;
 
 @Entity

@@ -1,8 +1,8 @@
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml"
-     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-    <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-    <div th:insert="~{blocks/logout :: logout}"></div>
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="blocks/maket">
+<div layout:fragment="content">
 
     <form th:method="get" th:action="main" class="row g-3">
         <div class="col-auto">
@@ -13,11 +13,31 @@
             <button class="btn btn-primary mb-3" type="submit">Search</button>
         </div>
     </form>
-    <div>Messages list</div>
-    <div th:each="coin : ${coins}" class="alert alert-into mt-2">
-        <b th:text="${coin.id}"></b>
-        <b th:text="${coin.name}"></b>
-        <b th:text="${coin.series.series}"></b>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div th:each="coin : ${coins}" class="alert alert-into mt-2">
+            <div class="card" style="width: 20rem;">
+                <div class="row justify-content-around">
+                    <img th:src="@{'/images/' + ${coin.catalogNumber} + '.png'}" class="card-img-top my-1 ms-1"
+                         style="width:165px;height:auto;">
+                    <img th:src="@{'/images/' + ${coin.catalogNumber} + 'r.png'}" class="card-img-top my-1 me-1"
+                         style="width:165px;height:auto;">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${coin.name}">Card title</h5>
+                    <p class="card-text" th:text="'Серия: ' + ${coin.series.series}">Some text</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:text="'Номинал: ' + ${coin.nominal.nominal}">An item</li>
+                    <li class="list-group-item" th:text="'Материал: ' + ${coin.material.material}">A second item</li>
+                    <li class="list-group-item" th:text="'Тираж: ' + ${coin.circulation} + ' шт.'">A third item</li>
+                </ul>
+                <div class="card-body">
+                    <a th:href="@{'coin/' + ${coin.id}}" class="btn btn-primary">More detailed</a>
+                    <a th:href="@{${coin.linkToBankPage}}" class="btn btn-primary">Bank page</a>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
 </div>
