@@ -1,27 +1,43 @@
 package com.example.numismatist.controllers;
 
-import com.example.numismatist.enteties.Role;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.UserRepo;
+import com.example.numismatist.services.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.util.StringUtils;
 import java.util.Collections;
+import java.util.Map;
+
+import com.example.numismatist.enteties.dto.CaptchaResponseDto;
 
 @Controller
 public class RegistrationController {
 
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+    @Value("${recaptcha.secret}")
+    private String secret;
+
+    private final RestTemplate restTemplate;
+    final
+    UserService userService;
     final
     PasswordEncoder passwordEncoder;
-    final
-    UserRepo userRepo;
 
-    public RegistrationController(PasswordEncoder passwordEncoder, UserRepo userRepo) {
+    public RegistrationController(PasswordEncoder passwordEncoder, UserRepo userRepo, UserService userService, RestTemplate restTemplate) {
         this.passwordEncoder = passwordEncoder;
-        this.userRepo = userRepo;
+        this.userService = userService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/registration")
@@ -29,19 +45,71 @@ public class RegistrationController {
         return "registration";
     }
 
+//    @PostMapping("/registration")
+//    public String addUser(User user, Model model) {
+//        if (!userService.addUser(user)) {
+//            model.addAttribute("message", "User already exist");
+//            return "registration";
+//        }
+//
+////        user.setActive(true);
+////        user.setRoles(Collections.singleton(Role.USER));
+////        user.setPassword(passwordEncoder.encode(user.getPassword()));
+////        userRepo.save(user);
+//
+//        return "redirect:/login";
+//    }
+
     @PostMapping("/registration")
-    public String addUser(User user, Model model) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb != null) {
-            model.addAttribute("message", "User already exist");
+    public String addUser(
+            @RequestParam("password2") String passwordConfirm,
+            @RequestParam("g-recaptcha-response") String captchaResponse,
+            @Valid User user,
+            BindingResult bindingResult,
+            Model model) {
+
+        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+
+        if (!response.isSuccess()){
+            model.addAttribute("captchaError", "Fill captcha");
+        }
+
+        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
+        if (isConfirmEmpty) {
+            model.addAttribute("password2Error", "Password confirmation cannot be empty");
+        }
+
+        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
+            model.addAttribute("passwordError", "Passwords are different");
+        }
+
+        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess()) {
+            Map<String, String> errors = ControllerUtils.getErrorsMap(bindingResult);
+            model.mergeAttributes(errors);
+
             return "registration";
         }
 
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
-
+        if (!userService.addUser(user)) {
+            model.addAttribute("usernameError", "User exist");
+            return "registration";
+        }
         return "redirect:/login";
     }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("messageType", "success");
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("message", "Activation code is not found");
+        }
+        return "login";
+    }
+
 }

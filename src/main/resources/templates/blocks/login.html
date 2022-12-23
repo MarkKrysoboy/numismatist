@@ -1,82 +1,84 @@
 <div th:fragment="login (path, isRegistreForm)">
 
-    <form th:action="${path}" method="post">
-        <div class="mb-3">
-            <label class="form-label">User name</label>
-            <div class="col-sm-6">
-                <input type="text" name="username" class="form-control"/>
+<!--    <form th:action="${path}" method="post">-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">User name</label>-->
+<!--            <div class="col-sm-6">-->
+<!--                <input type="text" name="username" class="form-control"/>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label>Password</label>-->
+<!--            <div class="col-sm-6">-->
+<!--                <input type="password" name="password" class="form-control"/>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button class="btn btn-primary" type="submit" th:text="${isRegistreForm}?'Create':'Sign In'"></button>-->
+<!--        <a href="/registration" th:unless="${isRegistreForm}" class="mx-1">Add new user</a>-->
+<!--    </form>-->
+
+        <form th:action="${path}" th:method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"> User Name: </label>
+                <div class="col-sm-6">
+                    <input th:class="${usernameError} ? 'form-control is-invalid' : 'form-control'" type="text"
+                           name="username" placeholder="User name" th:value="${username} ? ${username} : ''"/>
+                    <div class="invalid-feedback" th:if="${usernameError}" th:text="${usernameError}">
+                        Please choose a username.
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <div class="col-sm-6">
-                <input type="password" name="password" class="form-control"/>
+            <br/>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Password:</label>
+                <div class="col-sm-6">
+                    <input th:class="${passwordError} ? 'form-control is-invalid' : 'form-control'" type="password"
+                           name="password" placeholder="Password"/>
+                    <div class="invalid-feedback" th:if="${passwordError}" th:text="${passwordError}">
+                        Please choose a username.
+                    </div>
+                </div>
             </div>
-        </div>
-        <button class="btn btn-primary" type="submit" th:text="${isRegistreForm}?'Create':'Sign In'"></button>
-        <a href="/registration" th:unless="${isRegistreForm}" class="mx-1">Add new user</a>
-    </form>
+            <br/>
+            <div th:if="${isRegistreForm}">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Retype password:</label>
+                    <div class="col-sm-6">
+                        <input th:class="${password2Error} ? 'form-control is-invalid' : 'form-control'" type="password"
+                               name="password2" placeholder="Retype password"/>
+                        <div class="invalid-feedback" th:if="${password2Error}" th:text="${password2Error}">
+                            Please choose a username.
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="form-group row">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Email:</label>
+                        <div class="col-sm-6">
+                            <input th:class="${emailError} ? 'form-control is-invalid' : 'form-control'" type="email"
+                                   name="email" placeholder="some@some.com"
+                                   th:value="${email} ? ${email} : ''"/>
+                            <div class="invalid-feedback" th:if="${emailError}" th:text="${emailError}">
+                                Please choose a username.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    <div class="col-sm-6">
+                        <div class="g-recaptcha" data-sitekey="6LcJrzkjAAAAAF4hNbmUmqYAwaevpSH_u1unpYkY"></div>
+                        <div class="alert alert-danger" role="alert" th:if="${captchaError}">
+                            <div th:text="${captchaError}" th:unless=null></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <button class="btn btn-primary" type="submit" th:text="${isRegistreForm}?'Create':'Sign In'"></button>
+            <a href="/registration" th:unless="${isRegistreForm}">Add new user</a>
+        </form>
 
 </div>
-<!--    <form th:action="${path}" th:method="post">-->
-<!--        <div class="form-group row">-->
-<!--            <label class="col-sm-2 col-form-label"> User Name: </label>-->
-<!--            <div class="col-sm-6">-->
-<!--                <input th:class="${usernameError} ? 'form-control is-invalid' : 'form-control'" type="text"-->
-<!--                       name="username" placeholder="User name" th:value="${username} ? ${username} : ''"/>-->
-<!--                <div class="invalid-feedback" th:if="${usernameError}" th:text="${usernameError}">-->
-<!--                    Please choose a username.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <br/>-->
-<!--        <div class="form-group row">-->
-<!--            <label class="col-sm-2 col-form-label">Password:</label>-->
-<!--            <div class="col-sm-6">-->
-<!--                <input th:class="${passwordError} ? 'form-control is-invalid' : 'form-control'" type="password"-->
-<!--                       name="password" placeholder="Password"/>-->
-<!--                <div class="invalid-feedback" th:if="${passwordError}" th:text="${passwordError}">-->
-<!--                    Please choose a username.-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <br/>-->
-<!--        <div th:if="${isRegistreForm}">-->
-<!--            <div class="form-group row">-->
-<!--                <label class="col-sm-2 col-form-label">Retype password:</label>-->
-<!--                <div class="col-sm-6">-->
-<!--                    <input th:class="${password2Error} ? 'form-control is-invalid' : 'form-control'" type="password"-->
-<!--                           name="password2" placeholder="Retype password"/>-->
-<!--                    <div class="invalid-feedback" th:if="${password2Error}" th:text="${password2Error}">-->
-<!--                        Please choose a username.-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <br/>-->
-<!--            <div class="form-group row">-->
-<!--                <div class="form-group row">-->
-<!--                    <label class="col-sm-2 col-form-label">Email:</label>-->
-<!--                    <div class="col-sm-6">-->
-<!--                        <input th:class="${emailError} ? 'form-control is-invalid' : 'form-control'" type="email"-->
-<!--                               name="email" placeholder="some@some.com"-->
-<!--                               th:value="${email} ? ${email} : ''"/>-->
-<!--                        <div class="invalid-feedback" th:if="${emailError}" th:text="${emailError}">-->
-<!--                            Please choose a username.-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <br/>-->
-<!--            <div>-->
-<!--                <div class="col-sm-6">-->
-<!--                    <div class="g-recaptcha" data-sitekey="6LcJrzkjAAAAAF4hNbmUmqYAwaevpSH_u1unpYkY"></div>-->
-<!--                    <div class="alert alert-danger" role="alert" th:if="${captchaError}">-->
-<!--                        <div th:text="${captchaError}" th:unless=null></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <br/>-->
-<!--        <button class="btn btn-primary" type="submit" th:text="${isRegistreForm}?'Create':'Sign In'"></button>-->
-<!--        <a href="/registration" th:unless="${isRegistreForm}">Add new user</a>-->
-<!--    </form>-->
+

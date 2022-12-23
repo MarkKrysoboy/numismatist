@@ -3,17 +3,12 @@ package com.example.numismatist.services;
 import com.example.numismatist.enteties.Role;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,20 +16,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final MailSander mailSander;
     private final UserRepo userRepository;
 
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepo userRepository, MailSander mailSander) {
         this.userRepository = userRepository;
+        this.mailSander = mailSander;
     }
 
-//    @Autowired
-//    private MailSander mailSander;
-
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
-//    @Value("${hostname}")
-//    private String hostname;
+    @Value("${hostname}")
+    private String hostname;
 
 
     @Override
@@ -54,38 +45,38 @@ public class UserService implements UserDetailsService {
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-//        user.setActivationCode(UUID.randomUUID().toString());
+        user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(user.getPassword());
         userRepository.save(user);
-//        sendMessage(user);
+        sendMessage(user);
         return true;
     }
 
-//    private void sendMessage(User user) {
-//        if (!StringUtils.isEmpty(user.getEmail())) {
-//            String message = String.format(
-//                    "Hello, %s \n" +
-//                            "Welcome to Sweater. Please, visit next link: http://%s/activate/%s",
-//                    user.getUsername(),
-//                    hostname,
-//                    user.getActivationCode()
-//            );
-//            mailSander.send(user.getEmail(), "Activation code", message);
-//        }
-//    }
+    private void sendMessage(User user) {
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello, %s \n" +
+                            "Welcome to Sweater. Please, visit next link: http://%s/activate/%s",
+                    user.getUsername(),
+                    hostname,
+                    user.getActivationCode()
+            );
+            mailSander.send(user.getEmail(), "Activation code", message);
+        }
+    }
 
-//    public boolean activateUser(String code) {
-//        User user = userRepository.findByActivationCode(code);
-//
-//        if (user == null) {
-//            return false;
-//        }
-//
-//        user.setActivationCode(null);
-//        userRepository.save(user);
-//
-//        return true;
-//    }
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActivationCode(null);
+        userRepository.save(user);
+
+        return true;
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();
