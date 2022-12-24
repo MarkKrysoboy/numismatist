@@ -1,24 +1,12 @@
-<!--<!DOCTYPE HTML>-->
-<!--<html lang="en"-->
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--      layout:decorate="blocks/maket">-->
-<!--&lt;!&ndash;<div layout:fragment="content">&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}" th:if="${#session} and ${session['SPRING_SECURITY_LAST_EXCEPTION']}">&ndash;&gt;-->
-<!--    <div class="alert alert-danger" th:text = "${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"-->
-<!--         th:if="${session} and ${param.error}">-->
-<!--    </div>-->
-
-<!--    <div th:class="'alert alert-' + ${messageType}" role="alert" th:if="${message}">-->
-<!--        <div th:text="${message}" th:unless=null></div>-->
-<!--    </div>-->
-
-<!--    <div th:insert="~{blocks/login :: login (@{/login}, false)}"></div>-->
-
-<!--</div>-->
-
 <div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
 
+    <div class="alert alert-danger" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
+         th:if="${session} and ${param.error}">
+    </div>
+
+    <div th:class="'alert alert-' + ${messageType}" role="alert" th:if="${message}">
+        <div th:text="${message}" th:unless=null></div>
+    </div>
     <div th:if="${param.error}">
         Invalid username and password.
     </div>

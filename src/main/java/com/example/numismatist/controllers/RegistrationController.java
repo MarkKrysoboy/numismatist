@@ -1,25 +1,24 @@
 package com.example.numismatist.controllers;
 
 import com.example.numismatist.enteties.User;
+import com.example.numismatist.enteties.dto.CaptchaResponseDto;
 import com.example.numismatist.repositories.UserRepo;
 import com.example.numismatist.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.util.StringUtils;
+
 import java.util.Collections;
 import java.util.Map;
-
-import com.example.numismatist.enteties.dto.CaptchaResponseDto;
 
 @Controller
 public class RegistrationController {
@@ -31,11 +30,8 @@ public class RegistrationController {
     private final RestTemplate restTemplate;
     final
     UserService userService;
-    final
-    PasswordEncoder passwordEncoder;
 
     public RegistrationController(PasswordEncoder passwordEncoder, UserRepo userRepo, UserService userService, RestTemplate restTemplate) {
-        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.restTemplate = restTemplate;
     }
@@ -44,21 +40,6 @@ public class RegistrationController {
     public String registration() {
         return "registration";
     }
-
-//    @PostMapping("/registration")
-//    public String addUser(User user, Model model) {
-//        if (!userService.addUser(user)) {
-//            model.addAttribute("message", "User already exist");
-//            return "registration";
-//        }
-//
-////        user.setActive(true);
-////        user.setRoles(Collections.singleton(Role.USER));
-////        user.setPassword(passwordEncoder.encode(user.getPassword()));
-////        userRepo.save(user);
-//
-//        return "redirect:/login";
-//    }
 
     @PostMapping("/registration")
     public String addUser(
