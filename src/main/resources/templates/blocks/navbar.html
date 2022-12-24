@@ -18,14 +18,17 @@
                     </li>
                     <div sec:authorize="isAuthenticated()">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">My coins</a>
-                            <!--                            <a class="nav-link" aria-current="page"-->
-                            <!--                               th:href="'/user_messages/' + ${currentUser.id}">My coins</a>-->
+                            <a class="nav-link" aria-current="page" th:href="'/main/' + ${currentUser.id}">My coins</a>
                         </li>
                     </div>
                     <div sec:authorize="hasAuthority('ADMIN')">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/user">User list</a>
+                        </li>
+                    </div>
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/updating_database">Updating database</a>
                         </li>
                     </div>
                     <div sec:authorize="hasAuthority('USER')">

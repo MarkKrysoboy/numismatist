@@ -1,15 +1,4 @@
-<!--<!DOCTYPE HTML>-->
-<!--<html lang="en"-->
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--      layout:decorate="blocks/maket">-->
-<!--<div layout:fragment="content">-->
-
-<!--    <div th:text="${message}" th:unless=null></div>-->
-<!--    <div th:insert="~{blocks/login :: login (@{/registration}, true)}"></div>-->
-
-<!--</div>-->
-
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template">
 
     <div th:if="${param.error}">
         Invalid username and password.

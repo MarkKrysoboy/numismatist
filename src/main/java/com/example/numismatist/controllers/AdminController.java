@@ -1,22 +1,24 @@
 package com.example.numismatist.controllers;
 
-import com.example.numismatist.enteties.Coin;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.CoinRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class MainController {
+@PreAuthorize("hasAuthority('ADMIN')")
+public class AdminController {
 
+    final
+    CoinRepo coinRepo;
 
-    private final CoinRepo coinRepo;
-
-    public MainController(CoinRepo coinRepo) {
+    public AdminController(CoinRepo coinRepo) {
         this.coinRepo = coinRepo;
     }
 
@@ -25,25 +27,11 @@ public class MainController {
         return currentUser;
     }
 
-    @GetMapping("/")
-    public String greeting(Model model) {
+    @GetMapping("/updating_database")
+    public String updateBase(Model model) {
+        Long countCoin = coinRepo.count();
+        model.addAttribute("countCoins", countCoin);
 
-        return "greeting";
+        return "updating_database";
     }
-
-    @GetMapping("/main")
-    public String main(Model model) {
-        Iterable<Coin> coins = coinRepo.findAll();
-        model.addAttribute("coins", coins);
-        return "main";
-    }
-
-    @GetMapping("/main/{user}")
-    public String userCoins(Model model) {
-        // Todo findUserCoins
-        Iterable<Coin> coins = coinRepo.findAll();
-        model.addAttribute("coins", coins);
-        return "main";
-    }
-
 }

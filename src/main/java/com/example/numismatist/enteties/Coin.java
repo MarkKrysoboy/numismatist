@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -45,10 +46,11 @@ public class Coin {
     private String historicalReference;
     @Column(columnDefinition="TEXT")
     private String linkToBankPage;
-    @Lob
-    private String obverseImage;
-    @Lob
-    private String reverseImage;
+
+    @ElementCollection(targetClass = KindOfCoin.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "kind_coin", joinColumns = @JoinColumn(name = "coin_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<KindOfCoin> kindOfCoins;
 
     public Coin() {
     }

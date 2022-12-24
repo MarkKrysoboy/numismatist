@@ -1,4 +1,4 @@
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/maket">
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template">
 
     <div class="alert alert-danger" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
          th:if="${session} and ${param.error}">
