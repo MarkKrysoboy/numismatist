@@ -3,6 +3,7 @@ package com.example.numismatist.controllers;
 import com.example.numismatist.enteties.Coin;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.CoinRepo;
+import com.example.numismatist.services.CoinsUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class MainController {
 
+    @Autowired
+    CoinsUsersService coinsUsersService;
 
     private final CoinRepo coinRepo;
 
@@ -32,7 +35,7 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Model model) {
+    public String main(Model model,  @ModelAttribute("currentUser") User currentUser) {
         Iterable<Coin> coins = coinRepo.findAll();
         model.addAttribute("coins", coins);
         return "main";

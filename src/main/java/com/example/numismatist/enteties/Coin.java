@@ -22,7 +22,7 @@ public class Coin {
     private Date releaseDate;
     private String catalogNumber;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_niminal")
+    @JoinColumn(name = "id_nominal")
     private Nominal nominal;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_material")
@@ -51,6 +51,9 @@ public class Coin {
     @CollectionTable(name = "kind_coin", joinColumns = @JoinColumn(name = "coin_id"))
     @Enumerated(EnumType.STRING)
     private Set<KindOfCoin> kindOfCoins;
+
+    @OneToMany(mappedBy = "coin")
+    Set<CoinsUsers> counts;
 
     public Coin() {
     }

@@ -1,20 +1,26 @@
 package com.example.numismatist.controllers;
 
+import com.example.numismatist.enteties.Coin;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.CoinRepo;
+import com.example.numismatist.services.ReadXlsxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
+@RequestMapping(value = "/main")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
+    @Autowired
+    ReadXlsxService readXlsx;
     final
     CoinRepo coinRepo;
 
@@ -27,11 +33,33 @@ public class AdminController {
         return currentUser;
     }
 
-    @GetMapping("/updating_database")
-    public String updateBase(Model model) {
+    @GetMapping("updating")
+    public String updateDb(Model model) {
         Long countCoin = coinRepo.count();
         model.addAttribute("countCoins", countCoin);
+        return "updating";
+    }
 
-        return "updating_database";
+    @PostMapping("updating")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+        if (!file.isEmpty()) {
+            model.addAttribute("fileName", file.getOriginalFilename());
+            try {
+                readXlsx.setFile(file);
+                List<Coin> coinList = readXlsx.readXlsxToList();
+                model.addAttribute("coinlist", coinList);
+                model.addAttribute("message", "Added next coins:");
+                readXlsx.addCoinsFromList(coinList);
+                return "redirect:/main";
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("message", "File upload is failed: " + e.getMessage());
+                return "updating";
+            }
+        } else {
+            model.addAttribute("message", "File upload is failed: File is empty");
+            return "updating";
+        }
     }
 }

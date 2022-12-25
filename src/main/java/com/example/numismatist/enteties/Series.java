@@ -14,7 +14,7 @@ public class Series {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_series;
 
-    private String series;
+    private String seriesName;
 
     @Column(columnDefinition="TEXT")
     private String linkToBankPage;

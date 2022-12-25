@@ -34,6 +34,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    Set<CoinsUsers> counts;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
