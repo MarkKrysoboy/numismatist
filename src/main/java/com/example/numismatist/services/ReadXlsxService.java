@@ -6,20 +6,26 @@ import com.example.numismatist.enteties.Nominal;
 import com.example.numismatist.enteties.Series;
 import com.example.numismatist.repositories.CoinRepo;
 import lombok.Data;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jsoup.Jsoup;
+
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.*;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Data
@@ -30,18 +36,17 @@ public class ReadXlsxService {
 
     @Autowired
     private CoinAttributeService coinAttributeService;
-    private MultipartFile file;
-    private List<Coin> coins;
-    private String str;
 
+    @Value("${upload.path}")
+    private String uploadPath;
     public File multipartFileToFile(MultipartFile multipart, String fileName) throws IOException {
         File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + fileName);
         multipart.transferTo(convFile);
         return convFile;
     }
 
-    public List<Coin> readXlsxToList() {
-        coins = new ArrayList<>();
+    public List<Coin> readXlsxToList(MultipartFile file) {
+        List<Coin> coins = new ArrayList<>();
         try (FileInputStream fileInputStream = new FileInputStream(multipartFileToFile(file, file.getName()))) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
@@ -69,6 +74,8 @@ public class ReadXlsxService {
                     Material material = coinAttributeService.addMaterial(materialFromFile);
                     coin.setMaterial(material);
                 }
+                int amount = getCirculation(String.format("https://cbr.ru/cash_circulation/memorable_coins/coins_base/ShowCoins/?cat_num=%s", coin.getCatalogNumber()));
+                coin.setCirculation(amount);
 
                 coins.add(coin);
             }
@@ -83,6 +90,40 @@ public class ReadXlsxService {
             Coin coinTemp = coinRepo.findByCatalogNumber(coin.getCatalogNumber());
             if (coinTemp == null) coinRepo.save(coin);
         }
+    }
+
+    public String deleteCharacter(String string) {
+        List<Character> numbers = Arrays.asList('0', '1','2', '3', '4', '5', '6', '7', '8', '9');
+        StringBuilder stringBuilder = new StringBuilder(string);
+        for (int i = 0; i < string.length(); i++) {
+
+            if (!numbers.contains(string.charAt(i))){
+               stringBuilder.deleteCharAt(i);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public int getCirculation(String url) {
+        Document doc;
+        String amount = "";
+        try {
+            doc = Jsoup.connect(url).get();
+            String body = doc.text();
+            System.out.println(body);
+            String regexp = "шт\\W\\s[\\d+\\s{1}]+\\b";
+            Pattern pattern = Pattern.compile(regexp);
+            Matcher matcher = pattern.matcher(body);
+            int i = 0;
+            while (matcher.find(i)) {
+                amount = i == 0 ? matcher.group().substring(4) : amount + " / " + matcher.group().substring(4);
+                i = matcher.end();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Integer.parseInt(deleteCharacter(amount));
     }
 
 }

@@ -21,8 +21,7 @@ public class AdminController {
 
     @Autowired
     ReadXlsxService readXlsx;
-    final
-    CoinRepo coinRepo;
+    final CoinRepo coinRepo;
 
     public AdminController(CoinRepo coinRepo) {
         this.coinRepo = coinRepo;
@@ -41,25 +40,33 @@ public class AdminController {
     }
 
     @PostMapping("updating")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+    public String handleFileUpload(@RequestParam(value = "file", required = false) MultipartFile file, Model model) {
         if (!file.isEmpty()) {
             model.addAttribute("fileName", file.getOriginalFilename());
             try {
-                readXlsx.setFile(file);
-                List<Coin> coinList = readXlsx.readXlsxToList();
+                List<Coin> coinList = readXlsx.readXlsxToList(file);
+                readXlsx.addCoinsFromList(coinList);
                 model.addAttribute("coinlist", coinList);
                 model.addAttribute("message", "Added next coins:");
-                readXlsx.addCoinsFromList(coinList);
-                return "redirect:/main";
-
             } catch (Exception e) {
                 e.printStackTrace();
                 model.addAttribute("message", "File upload is failed: " + e.getMessage());
-                return "updating";
             }
         } else {
             model.addAttribute("message", "File upload is failed: File is empty");
-            return "updating";
         }
+        return "updating";
     }
+
+    //    @GetMapping("updating/download")
+//    public String downloadData(Model model) {
+//        Long countCoin = coinRepo.count();
+//        model.addAttribute("countCoins", countCoin);
+//        return "updating/download";
+//    }
+//    @PostMapping("updating/download")
+//    public String downloadData(@RequestParam(value = "coinsList") List<Coin> coinList, Model model) {
+//        readXlsx.addCirculation(coinList);
+//        return "redirect:/updating";
+//    }
 }

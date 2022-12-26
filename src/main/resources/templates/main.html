@@ -10,46 +10,5 @@
             <button class="btn btn-primary mb-3" type="submit">Search</button>
         </div>
     </form>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div th:each="coin : ${coins}" class="alert alert-into mt-2">
-            <div class="card" style="width: 20rem;">
-                <div class="row justify-content-around">
-                    <!--Скрыть значки, когда нет картинки-->
-                    <img th:src="@{'/images/' + ${coin.catalogNumber} + '.png'}" class="card-img-top my-1 ms-1"
-                         style="width:165px;height:auto;">
-                    <img th:src="@{'/images/' + ${coin.catalogNumber} + 'r.png'}" class="card-img-top my-1 me-1"
-                         style="width:165px;height:auto;">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${coin.name}">Card title</h5>
-                    <p class="card-text" th:text="'Серия: ' + ${coin.series.seriesName}" th:if="${coin.series != null}">Some text</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item" th:text="'Номинал: ' + ${coin.nominal.nominal}">An item</li>
-                    <li class="list-group-item" th:text="'Материал: ' + ${coin.material.material}">A second item</li>
-                    <li class="list-group-item" th:text="'Тираж: ' + ${coin.circulation} + ' шт.'">A third item</li>
-                </ul>
-                <div class="card-body">
-                    <a th:href="@{'coin/' + ${coin.id}}" class="btn btn-primary">More detailed</a>
-                    <a th:href="@{${coin.linkToBankPage}}" class="btn btn-primary">Bank page</a>
-                </div>
-                <ul class="list-group list-group-flush" sec:authorize="isAuthenticated()">
-                    <li class="list-group-item">
-                        <h6 class="card-title">
-                            <p class="text-center  mb-1">В наличии</p>
-                        </h6>
-                        <div class="input-group mb-3">
-                            <button class="btn btn-outline-secondary" type="button" id="button-minus">-</button>
-                            <input type="text" class="form-control" th:placeholder="''"
-                                   aria-label="Example text with button addon" aria-describedby="button-addon1">
-                            <button class="btn btn-outline-secondary" type="button" id="button-plus">+</button>
-                            <button class="btn btn-outline-secondary" type="button" id="button-save">Save</button>
-                        </div>
-                    </li>
-                </ul>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-
+    <div th:insert="~{blocks/coins_list :: coins_list (${coins})}"></div>
+</div>

@@ -5,25 +5,19 @@
 
     <form class="mb-3 mt-5" method="post" th:action="${updating}" enctype="multipart/form-data">
         <div class="mb-3">
-            <label for="formFile" class="form-label">Download from file</label>
+            <label for="formFile" class="form-label">Add from file</label>
             <input class="form-control" name="file" type="file" id="formFile">
         </div>
         <button class="btn btn-primary mb-3" type="submit">Add coins</button>
     </form>
 
     <div><h3 th:text="${message}"></h3></div>
-    <div th:each="coin : ${coinlist}" class="alert alert-into">
-        <tr>
-            <td th:text="${coin.name}"></td>
-            <td th:text="${coin.series.seriesName}" th:if="${coin.series != null}"></td>
-            <td th:text="${coin.nominal.nominal}"></td>
-            <td th:text="${coin.material.material}"></td>
-            <td th:text="${coin.releaseDate}"></td>
-        </tr>
-    </div>
 
-    <!--    <form class="mt-5" method="post" action="updating">-->
-    <!--        <button class="btn btn-primary mb-3" type="submit">Download dates from bank's page</button>-->
-    <!--    </form>-->
+        <div th:insert="~{blocks/coins_list :: coins_list (${coinlist})}"></div>
+
+        <form class="mt-5" method="post" action="updating/download">
+            <input  type="hidden" class="form-control" name="coinsList" th:value="${coinlist}">
+            <button class="btn btn-primary mb-3" type="submit">Download dates from bank's page</button>
+        </form>
 
 </div>
