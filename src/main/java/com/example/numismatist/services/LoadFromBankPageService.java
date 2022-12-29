@@ -109,6 +109,7 @@ public class LoadFromBankPageService {
                 int start = str.indexOf(text) + text.length() + 1;
                 int end = findUppercase(str, start) - 1;
                 String outText = str.substring(start, end);
+                System.out.println(outText);
                 return outText;
             } else {
                 return null;
@@ -129,7 +130,6 @@ public class LoadFromBankPageService {
         } catch (DateTimeParseException ex) {
             System.out.println(ex.getMessage());
         }
-        System.out.println(Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
@@ -145,11 +145,17 @@ public class LoadFromBankPageService {
     }
 
     public Material getMaterial(String str) {
-        String filter = null;
-        if (str.contains("Сплав")) filter = "Сплав";
-        if (str.contains("Металл, проба")) filter = "Металл, проба";
-        if (str.contains("Материал")) filter = "Материал";
-        String material = getText(str, filter);
+        String material = null;
+        if (str.contains("Сплав")) {
+            String temp = str.substring(str.indexOf("Сплав") + 6, str.indexOf("Масса общая"));
+            material = temp.length() > 0 ? temp : null;
+        }
+        if (str.contains("Металл, проба")) {
+            material = getText(str, "Металл, проба");
+        }
+        if (str.contains("Материал")) {
+            material = getText(str, "Материал");
+        }
         coinAttributeService.addMaterial(material);
         return materialRepo.findByMaterial(material);
     }
@@ -162,6 +168,16 @@ public class LoadFromBankPageService {
     public String getDiameter(String str) {
         String diameter = getText(str, "Диаметр, мм");
         return diameter;
+    }
+
+    public String getLength(String str) {
+        String length = getText(str, "Длина, мм");
+        return length;
+    }
+
+    public String getWidth(String str) {
+        String width = getText(str, "Ширина, мм");
+        return width;
     }
 
     public String getThickness(String str) {
@@ -284,6 +300,8 @@ public class LoadFromBankPageService {
         coin.setCirculation(getCirculation(str));
         coin.setWeight(getWeight(str));
         coin.setDiameter(getDiameter(str));
+        coin.setLength(getLength(str));
+        coin.setWidth(getWidth(str));
         coin.setThickness(getThickness(str));
         coin.setPureMetal(getPureMetal(str));
         coin.setQuality(getQuality(str));

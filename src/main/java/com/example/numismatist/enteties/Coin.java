@@ -29,6 +29,8 @@ public class Coin {
     private Material material;
     private String weight;
     private String diameter;
+    private String length;
+    private String width;
     private String thickness;
     private String circulation;
     @Column(columnDefinition="TEXT")
