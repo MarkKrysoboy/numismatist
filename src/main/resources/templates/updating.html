@@ -13,9 +13,15 @@
     </form>
 
     <form class="mb-3 mt-5" method="post" th:action="${updating}">
-        <input type="text" class="form-control mb-3" name="url">
+        <input type="text" class="form-control mb-3" name="url" placeholder="Enter URL page">
         <input type="hidden" name="typeSource" value="page"/>
         <button class="btn btn-primary mb-3" type="submit">Add coin from bank's page</button>
+    </form>
+
+    <form class="mb-3 mt-5" method="post" th:action="${updating}">
+        <input type="text" class="form-control mb-3" name="year" placeholder="Enter year release">
+        <input type="hidden" name="typeSource" value="year"/>
+        <button class="btn btn-primary mb-3" type="submit">Add coins this year release</button>
     </form>
 
     <div><h3 th:text="${message}"></h3></div>

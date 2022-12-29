@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -260,7 +261,7 @@ public class LoadFromBankPageService {
     }
 
     public List<Coin> addCoinFromBankPage(String url) throws ParseException {
-        List<Coin> coins = new ArrayList<>();
+        List<Coin> coinList = new ArrayList<>();
         Coin coin = new Coin();
         Document doc = getJsoupDocument(url);
         String str = getCoinDescription(doc);
@@ -273,10 +274,10 @@ public class LoadFromBankPageService {
             coin.setReleaseDate(getReleaseDate(str));
             coin.setCatalogNumber(catalogNumber);
             addAdditionParameters(url, coin, doc, str, catalogNumber);
-            coins.add(coin);
+            coinList.add(coin);
             coinRepo.save(coin);
         }
-        return coins;
+        return coinList;
     }
 
     public void addAdditionParameters(String url, Coin coin, Document doc, String str, String catalogNumber) {
@@ -295,5 +296,23 @@ public class LoadFromBankPageService {
         coin.setInvestment(isInvestment(url));
         coin.setLinkToBankPage(String.format("https://cbr.ru/cash_circulation/memorable_coins/coins_base/ShowCoins/?cat_num=%s", catalogNumber));
         saveImages(doc, catalogNumber);
+    }
+
+    public List<Coin> addCoinsFromBankSite(String year) throws ParseException {
+        List<Coin> coinsList = new ArrayList<>();
+        String urlYear = String.format("https://cbr.ru/cash_circulation/memorable_coins/coins_base/?" +
+                "UniDbQuery.Posted=True&UniDbQuery.SearchPhrase=&UniDbQuery.year=%s&" +
+                "UniDbQuery.serie_id=0&UniDbQuery.nominal=-1&UniDbQuery.metal_id=0&UniDbQuery.tab=1&" +
+                "UniDbQuery.page=1&UniDbQuery.sort=99&UniDbQuery.sort_direction=down", year);
+        Document doc = getJsoupDocument(urlYear);
+        Elements elements = doc.getElementsByTag("a");
+        for (Element yearsLink : elements) {
+            String coinLink = yearsLink.attr("href");
+            if (Pattern.matches(".*\\d{4}(-)\\d{4}((-)\\d{2})*", coinLink)) {
+                String urlCoin = "https://cbr.ru/cash_circulation/memorable_coins/coins_base/" + coinLink;
+                coinsList.addAll(addCoinFromBankPage(urlCoin));
+            }
+        }
+        return coinsList;
     }
 }

@@ -51,6 +51,7 @@ public class AdminController {
     public String handleFileUpload(
             @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam(required = false) String url,
+            @RequestParam(required = false) String year,
             String typeSource,
             Model model
     ) throws ParseException {
@@ -59,7 +60,6 @@ public class AdminController {
                 model.addAttribute("fileName", file.getOriginalFilename());
                 try {
                     model.addAttribute("coinlist", lff.addCoinFromFile(file));
-                    model.addAttribute("message", "Added next coins:");
                 } catch (Exception e) {
                     e.printStackTrace();
                     model.addAttribute("message", "File upload is failed: " + e.getMessage());
@@ -71,6 +71,12 @@ public class AdminController {
         if (typeSource.equals("page")) {
             model.addAttribute("coinlist", lfbp.addCoinFromBankPage(url));
         }
+
+        if (typeSource.equals("year")){
+            model.addAttribute("coinlist", lfbp.addCoinsFromBankSite(year));
+        }
+        model.addAttribute("message", "Added next coins:");
+        model.addAttribute("countCoins", coinRepo.count());
         return "updating";
     }
 }
