@@ -48,26 +48,29 @@ public class AdminController {
     }
 
     @PostMapping("updating")
-    public String handleFileUpload(@RequestParam(value = "file", required = false) MultipartFile file, Model model) {
-        if (!file.isEmpty()) {
-            model.addAttribute("fileName", file.getOriginalFilename());
-            try {
-                model.addAttribute("coinlist", lff.addCoinFromFile(file));
-                model.addAttribute("message", "Added next coins:");
-            } catch (Exception e) {
-                e.printStackTrace();
-                model.addAttribute("message", "File upload is failed: " + e.getMessage());
+    public String handleFileUpload(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(required = false) String url,
+            String typeSource,
+            Model model
+    ) throws ParseException {
+        if (typeSource.equals("file")) {
+            if (!file.isEmpty()) {
+                model.addAttribute("fileName", file.getOriginalFilename());
+                try {
+                    model.addAttribute("coinlist", lff.addCoinFromFile(file));
+                    model.addAttribute("message", "Added next coins:");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    model.addAttribute("message", "File upload is failed: " + e.getMessage());
+                }
+            } else {
+                model.addAttribute("message", "File upload is failed: File is empty");
             }
-        } else {
-            model.addAttribute("message", "File upload is failed: File is empty");
+        }
+        if (typeSource.equals("page")) {
+            model.addAttribute("coinlist", lfbp.addCoinFromBankPage(url));
         }
         return "updating";
     }
-
-//    @PostMapping("updating")
-//    public String downloadData(@RequestParam String url, Model model) throws ParseException {
-//        model.addAttribute("coinlist", lfbp.addCoinFromBankPage(url));
-//        return "updating";
-//    }
-
 }

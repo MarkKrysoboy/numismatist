@@ -7,12 +7,14 @@
         <div class="mb-3">
             <label for="formFile" class="form-label">Add from file</label>
             <input class="form-control" name="file" type="file" id="formFile">
+            <input type="hidden" name="typeSource" value="file"/>
         </div>
         <button class="btn btn-primary mb-3" type="submit">Add coins</button>
     </form>
 
     <form class="mb-3 mt-5" method="post" th:action="${updating}">
         <input type="text" class="form-control mb-3" name="url">
+        <input type="hidden" name="typeSource" value="page"/>
         <button class="btn btn-primary mb-3" type="submit">Add coin from bank's page</button>
     </form>
 

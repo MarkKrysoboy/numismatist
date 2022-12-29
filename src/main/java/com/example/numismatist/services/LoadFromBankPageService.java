@@ -108,7 +108,6 @@ public class LoadFromBankPageService {
                 int start = str.indexOf(text) + text.length() + 1;
                 int end = findUppercase(str, start) - 1;
                 String outText = str.substring(start, end);
-                System.out.println(outText);
                 return outText;
             } else {
                 return null;
