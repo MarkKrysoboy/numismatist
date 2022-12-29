@@ -11,13 +11,14 @@
         <button class="btn btn-primary mb-3" type="submit">Add coins</button>
     </form>
 
+    <form class="mb-3 mt-5" method="post" th:action="${updating}">
+        <input type="text" class="form-control mb-3" name="url">
+        <button class="btn btn-primary mb-3" type="submit">Add coin from bank's page</button>
+    </form>
+
     <div><h3 th:text="${message}"></h3></div>
+    <div th:insert="~{blocks/coins_list :: coins_list (${coinlist})}"></div>
 
-        <div th:insert="~{blocks/coins_list :: coins_list (${coinlist})}"></div>
 
-        <form class="mt-5" method="post" action="updating/download">
-            <input  type="hidden" class="form-control" name="coinsList" th:value="${coinlist}">
-            <button class="btn btn-primary mb-3" type="submit">Download dates from bank's page</button>
-        </form>
 
 </div>

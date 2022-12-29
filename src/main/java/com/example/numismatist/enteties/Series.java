@@ -19,6 +19,7 @@ public class Series {
     @Column(columnDefinition="TEXT")
     private String linkToBankPage;
 
+    private Integer idInBank;
     public Series() {
     }
 }

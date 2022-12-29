@@ -1,24 +1,22 @@
 package com.example.numismatist.services;
 
+import com.example.numismatist.enteties.Coinage;
 import com.example.numismatist.enteties.Material;
 import com.example.numismatist.enteties.Nominal;
 import com.example.numismatist.enteties.Series;
-import com.example.numismatist.repositories.CoinRepo;
-import com.example.numismatist.repositories.MaterialRepo;
-import com.example.numismatist.repositories.NominalRepo;
-import com.example.numismatist.repositories.SeriesRepo;
+import com.example.numismatist.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CoinAttributeService{
+public class CoinAttributeService {
 
     @Autowired
     private CoinRepo coinRepo;
 
     @Autowired
-    private SeriesRepo seriesRepo ;
+    private SeriesRepo seriesRepo;
 
     @Autowired
     private NominalRepo nominalRepo;
@@ -26,38 +24,54 @@ public class CoinAttributeService{
     @Autowired
     private MaterialRepo materialRepo;
 
-    public Series addSeries(String seriesFromFile) {
-        Series seriesFromDb = seriesRepo.findBySeriesName(seriesFromFile);
-        if (seriesFromDb != null) {
-            return seriesFromDb;
+    @Autowired
+    private CoinageRepo coinageRepo;
+
+    public void addSeries(String seriesFromFile, String linkToBankPage, Integer idInBank) {
+        if (seriesFromFile != null) {
+            Series seriesFromDb = seriesRepo.findBySeriesName(seriesFromFile);
+            if (seriesFromDb == null) {
+                Series series = new Series();
+                series.setSeriesName(seriesFromFile);
+                series.setLinkToBankPage(linkToBankPage);
+                series.setIdInBank(idInBank);
+                seriesRepo.save(series);
+            }
         }
-        Series series = new Series();
-        series.setSeriesName(seriesFromFile);
-        seriesRepo.save(series);
-        return series;
     }
 
-    public Nominal addNominal(String nominalFromFile) {
-        Nominal nominalFromDb = nominalRepo.findByNominal(nominalFromFile);
-        if (nominalFromDb != null) {
-            return nominalFromDb;
+
+    public void addNominal(String nominalFromFile) {
+        if (nominalFromFile != null) {
+            Nominal nominalFromDb = nominalRepo.findByNominal(nominalFromFile);
+            if (nominalFromDb == null) {
+                Nominal nominal = new Nominal();
+                nominal.setNominal(nominalFromFile);
+                nominalRepo.save(nominal);
+            }
         }
-        Nominal nominal = new Nominal();
-        nominal.setNominal(nominalFromFile);
-        nominalRepo.save(nominal);
-        return nominal;
     }
 
-    public Material addMaterial(String materialFromFile) {
-        Material materialFromDb = materialRepo.findByMaterial(materialFromFile);
-        if (materialFromDb != null) {
-            return materialFromDb;
+    public void addMaterial(String materialFromFile) {
+        if (materialFromFile != null) {
+            Material materialFromDb = materialRepo.findByMaterial(materialFromFile);
+            if (materialFromDb == null) {
+                Material material = new Material();
+                material.setMaterial(materialFromFile);
+                materialRepo.save(material);
+            }
         }
-        Material material = new Material();
-        material.setMaterial(materialFromFile);
-        materialRepo.save(material);
-        return material;
     }
 
+    public void addCoinage(String coinageName) {
+        if (coinageName != null) {
+            Coinage coinageFromDb = coinageRepo.findByCoinage(coinageName);
+            if (coinageFromDb == null) {
+                Coinage coinage = new Coinage();
+                coinage.setCoinage(coinageName);
+                coinageRepo.save(coinage);
+            }
+        }
+    }
 
 }

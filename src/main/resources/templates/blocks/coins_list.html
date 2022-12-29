@@ -5,10 +5,14 @@
             <div class="card" style="width: 20rem;">
                 <div class="row justify-content-around">
                     <!--Скрыть значки, когда нет картинки-->
-                    <img th:src="@{'/images/' + ${coin.catalogNumber} + '.png'}" class="card-img-top my-1 ms-1"
-                         style="width:165px;height:auto;">
-                    <img th:src="@{'/images/' + ${coin.catalogNumber} + 'r.png'}" class="card-img-top my-1 me-1"
-                         style="width:165px;height:auto;">
+                    <img th:src="@{'/images/' + ${coin.catalogNumber} + '.jpg'}" class="card-img-top my-1 ms-1"
+                         style="width:165px;height:auto;display: none;" onload="this.style.display=''">
+                    <img th:src="@{'/images/' + ${coin.catalogNumber} + 'r.jpg'}" class="card-img-top my-1 me-1"
+                         style="width:165px;height:auto;display: none;" onload="this.style.display=''">
+<!--                    <img th:src="@{'/images/' + ${coin.catalogNumber} + '.png'}" class="card-img-top my-1 ms-1"-->
+<!--                         style="width:165px;height:auto;display: none;" onload="this.style.display=''">-->
+<!--                    <img th:src="@{'/images/' + ${coin.catalogNumber} + 'r.png'}" class="card-img-top my-1 me-1"-->
+<!--                         style="width:165px;height:auto;display: none;" onload="this.style.display=''">-->
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${coin.name}">Card title</h5>

@@ -17,8 +17,6 @@ public class CoinsUsersService {
     @Autowired
     CoinRepo coinRepo;
 
-
-
     public Map<Coin, Integer> coinAddCount(User user) {
         Map<Coin, Integer> coinCount = null;
         Iterable<Coin> coins = coinRepo.findAll();

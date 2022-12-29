@@ -27,10 +27,10 @@ public class Coin {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_material")
     private Material material;
-    private Double weight;
-    private Double diameter;
-    private Double thickness;
-    private Integer circulation;
+    private String weight;
+    private String diameter;
+    private String thickness;
+    private String circulation;
     @Column(columnDefinition="TEXT")
     private String obverse;
     @Column(columnDefinition="TEXT")
@@ -46,11 +46,9 @@ public class Coin {
     private String historicalReference;
     @Column(columnDefinition="TEXT")
     private String linkToBankPage;
-
-    @ElementCollection(targetClass = KindOfCoin.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "kind_coin", joinColumns = @JoinColumn(name = "coin_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<KindOfCoin> kindOfCoins;
+    private String pureMetal;
+    private String quality;
+    private boolean isInvestment;
 
     @OneToMany(mappedBy = "coin")
     Set<CoinsUsers> counts;
