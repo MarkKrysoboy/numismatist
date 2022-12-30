@@ -1,0 +1,49 @@
+<div th:fragment="pager (url)" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div>
+        <div class="container mt-3">
+            <div class="row">
+                <ul class="pagination col justify-content-center">
+                    <li class="page-item">
+                        <a th:class="${page.getNumber()} gt 0?'page-link':'page-link disabled'"
+                           th:href="${page.getNumber()} gt 0?'?page=' + (${page.getNumber()}-1) + '&size=' + ${page.getSize()}:''"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <div th:each="p : ${pagesList}">
+                        <li class="page-item active">
+                            <a th:class="${p == -1}?'page-link disabled':'page-link'" href="#"
+                               th:text="${p != -1}?${p}:'...'"
+                               th:if="(${p}-1)==${page.getNumber()}"></a>
+                        </li>
+                        <li class="page-item">
+                            <a th:class="${p == -1}?'page-link disabled':'page-link'"
+                               th:href="'?page=' + (${p}-1) + '&size=' + ${page.getSize()}"
+                               th:text="${p != -1}?${p}:'...'" th:unless="(${p}-1)==${page.getNumber()}"></a>
+                        </li>
+                    </div>
+
+                    <li class="page-item">
+                        <a th:class="${page.getNumber()} lt ${page.getTotalPages()}-1?'page-link':'page-link disabled'"
+                           th:href="${page.getNumber()} lt ${page.getTotalPages()}-1?'?page=' + (${page.getNumber()}+1) + '&size=' + ${page.getSize()}:''"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pagination col justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Count of elements</a></li>
+                    <div th:each="c : ${#numbers.sequence( 9, 54, 9)}">
+                        <li class="page-item"><a class="page-link" href="#" th:text="${c}"
+                                                 th:if="${c}==${page.getSize()}"></a>
+                        </li>
+                        <li class="page-item"><a class="page-link"
+                                                 th:href="'?page=0&size=' + ${c}"
+                                                 th:text="${c}" th:unless="${c}==${page.getSize()}"></a></li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

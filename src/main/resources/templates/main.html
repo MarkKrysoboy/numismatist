@@ -10,5 +10,8 @@
             <button class="btn btn-primary mb-3" type="submit">Search</button>
         </div>
     </form>
+
+    <div th:insert="~{blocks/pager :: pager(url)}"></div>
     <div th:insert="~{blocks/coins_list :: coins_list (${coins})}"></div>
+    <div th:insert="~{blocks/pager :: pager(url)}"></div>
 </div>
