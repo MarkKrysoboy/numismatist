@@ -1,4 +1,4 @@
-<div th:fragment="pager (url)" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="pager" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div>
         <div class="container mt-3">
             <div class="row">
@@ -19,7 +19,7 @@
                         </li>
                         <li class="page-item">
                             <a th:class="${p == -1}?'page-link disabled':'page-link'"
-                               th:href="'?page=' + (${p}-1) + '&size=' + ${page.getSize()}"
+                               th:href="'?page=' + (${p}-1) + '&size=' + ${page.getSize()} + (${parameter}?${parameter}:'')"
                                th:text="${p != -1}?${p}:'...'" th:unless="(${p}-1)==${page.getNumber()}"></a>
                         </li>
                     </div>

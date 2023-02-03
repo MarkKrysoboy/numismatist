@@ -41,6 +41,11 @@ public class RegistrationController {
         return "registration";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @PostMapping("/registration")
     public String addUser(
             @RequestParam("password2") String passwordConfirm,

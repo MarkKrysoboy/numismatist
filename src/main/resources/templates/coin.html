@@ -1,0 +1,71 @@
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template">
+
+    <h1 th:text="${coin.name}">!!!</h1>
+
+    <div th:if="${coin.isInvestment}">Инвестиционная монета</div>
+
+    <div class="money_option">
+        <div>Дата выпуска</div>
+        <div th:text="${coin.releaseDate}"></div>
+    </div>
+    <div class="money_option">
+        <div>Каталожный номер</div>
+        <div th:text="${coin.catalogNumber}"></div>
+    </div>
+
+    <div>
+        <div>
+            <div>Номинал</div>
+            <div th:text="${coin.nominal.nominal}">3 рубля</div>
+        </div>
+        <div th:if="${coin.quality}">
+            <div>Качество</div>
+            <div th:text="${coin.quality}">пруф</div>
+        </div>
+        <div>
+            <div>Материал</div>
+            <div th:text="${coin.material.material}">серебро 925/1000</div>
+        </div>
+        <div>
+            <div>Масса общая, г</div>
+            <div th:text="${coin.weight}">33,94 (±0,31)</div>
+        </div>
+        <div th:if="${coin.pureMetal}">
+            <div>Содержание химически чистого металла не менее, г</div>
+            <div th:text="${coin.pureMetal}">31,10</div>
+        </div>
+        <div th:if="${coin.diameter}">
+            <div>Диаметр, мм</div>
+            <div th:text="${coin.diameter}">39,00 (±0,30)</div>
+        </div>
+        <div th:if="${coin.length}">
+            <div>Длина, мм</div>
+            <div th:text="${coin.length}">39,00 (±0,30)</div>
+        </div>
+        <div th:if="${coin.width}">
+            <div>Ширина, мм</div>
+            <div th:text="${coin.width}">39,00 (±0,30)</div>
+        </div>
+        <div>
+            <div>Толщина, мм</div>
+            <div th:text="${coin.thickness}">3,30 (±0,35)</div>
+        </div>
+        <div>
+            <div>Тираж, шт.</div>
+            <div th:text="${coin.circulation}">3 000</div>
+        </div>
+    </div>
+    <h2>Аверс</h2>
+    <p th:text="${coin.obverse}"></p>
+    <h2>Реверс</h2>
+    <p th:text="${coin.reverse}"></p>
+    <h3>Авторы</h3>
+    <p th:text="${coin.authors}"></p>
+    <h3>Чеканка: </h3>
+    <p th:text="${coin.coinage.coinage}"></p>
+    <h3>Оформление гурта: </h3>
+    <p th:text="${coin.designHerd}"></p>
+    <h2>Историко-тематическая справка</h2>
+    <p th:text="${coin.historicalReference}"></p>
+
+</div>

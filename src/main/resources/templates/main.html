@@ -1,17 +1,22 @@
 <div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template"
      xmlns:sec="http://www.w3.org/1999/xhtml">
 
-    <form th:method="get" th:action="main" class="row g-3">
+    <form th:method="post" th:action="filter" class="row g-3">
         <div class="col-auto">
-            <input th:type="text" th:name="filter" class="form-control" th:value="${filter}"
-                   placeholder="Search by tag"/>
+            <input th:type="text" th:name="series" class="form-control"
+                   placeholder="Search"/>
         </div>
         <div class="col-auto">
             <button class="btn btn-primary mb-3" type="submit">Search</button>
         </div>
     </form>
 
-    <div th:insert="~{blocks/pager :: pager(url)}"></div>
-    <div th:insert="~{blocks/coins_list :: coins_list (${coins})}"></div>
-    <div th:insert="~{blocks/pager :: pager(url)}"></div>
+    <div th:insert="~{blocks/pager :: pager}"></div>
+    <h4 th:text="${url}"></h4>
+    <div>
+        <h2 th:text="${message}" th:if="${message}"></h2>
+    </div>
+    <div th:insert="~{blocks/coins_list :: coins_list}"></div>
+
+    <div th:insert="~{blocks/pager :: pager}"></div>
 </div>

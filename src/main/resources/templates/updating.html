@@ -3,7 +3,7 @@
     <h2>BaseDate updating</h2>
     <div th:text="'Now in database ' + ${countCoins} + ' coins'" th:unless=null></div>
 
-    <form class="mb-3 mt-5" method="post" th:action="${updating}" enctype="multipart/form-data">
+    <form class="mt-3" method="post" th:action="${updating}" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="formFile" class="form-label">Add from file</label>
             <input class="form-control" name="file" type="file" id="formFile">
@@ -12,20 +12,20 @@
         <button class="btn btn-primary mb-3" type="submit">Add coins</button>
     </form>
 
-    <form class="mb-3 mt-5" method="post" th:action="${updating}">
+    <form class="mt-3" method="post" th:action="${updating}">
         <input type="text" class="form-control mb-3" name="url" placeholder="Enter URL page">
         <input type="hidden" name="typeSource" value="page"/>
         <button class="btn btn-primary mb-3" type="submit">Add coin from bank's page</button>
     </form>
 
-    <form class="mb-3 mt-5" method="post" th:action="${updating}">
+    <form class="mb-3 mt-3" method="post" th:action="${updating}">
         <input type="text" class="form-control mb-3" name="year" placeholder="Enter year release">
         <input type="hidden" name="typeSource" value="year"/>
         <button class="btn btn-primary mb-3" type="submit">Add coins this year release</button>
     </form>
 
-    <div><h3 th:text="${message}"></h3></div>
-    <div th:insert="~{blocks/coins_list :: coins_list (${coinlist})}"></div>
+<!--    <div><h3 th:text="${message}"></h3></div>-->
+<!--    <div th:insert="~{blocks/coins_list :: coins_list (${coinlist})}"></div>-->
 
 
 
