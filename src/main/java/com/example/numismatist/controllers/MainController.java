@@ -51,10 +51,20 @@ public class MainController {
                        @ModelAttribute("currentUser") User currentUser,
                        @RequestParam(required = false) String series,
                        @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
-        Page<Coin> page = coinRepo.findAll(pageable);
+        getPage(model, series, pageable);
+        return "main";
+    }
+
+    private void getPage(Model model, String series, Pageable pageable) {
+        Page<Coin> page;
+        if (series != null) {
+            page = coinRepo.findBySeries(seriesRepo.findBySeriesName(series), pageable);
+            model.addAttribute("parameter", "&series=" + series);
+        } else {
+            page = coinRepo.findAll(pageable);
+        }
         model.addAttribute("page", page);
         model.addAttribute("pagesList", coinService.pagesList(page));
-        return "main";
     }
 
     @GetMapping("/{user}")
@@ -65,16 +75,16 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/main/series")
-    public String seriesCoins(Model model,
-                              @RequestParam(required = false) String series,
-                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
-        Page<Coin> page = coinRepo.findBySeries(seriesRepo.findBySeriesName(series), pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("parameter", "&series=" + series);
-        model.addAttribute("pagesList", coinService.pagesList(page));
-        return "main";
-    }
+//    @GetMapping("/main/series")
+//    public String seriesCoins(Model model,
+//                              @RequestParam(required = false) String series,
+//                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
+//        Page<Coin> page = coinRepo.findBySeries(seriesRepo.findBySeriesName(series), pageable);
+//        model.addAttribute("page", page);
+//        model.addAttribute("parameter", "&series=" + series);
+//        model.addAttribute("pagesList", coinService.pagesList(page));
+//        return "main";
+//    }
 
     @GetMapping("main/{catalogNumber}")
     public String coinCatalogNumber(Model model, @PathVariable String catalogNumber) {

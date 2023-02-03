@@ -5,7 +5,7 @@
                 <ul class="pagination col justify-content-center">
                     <li class="page-item">
                         <a th:class="${page.getNumber()} gt 0?'page-link':'page-link disabled'"
-                           th:href="${page.getNumber()} gt 0?'?page=' + (${page.getNumber()}-1) + '&size=' + ${page.getSize()}:''"
+                           th:href="${page.getNumber()} gt 0?'?page=' + (${page.getNumber()}-1) + '&size=' + ${page.getSize()} + (${parameter}?${parameter}:''):''"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -26,7 +26,7 @@
 
                     <li class="page-item">
                         <a th:class="${page.getNumber()} lt ${page.getTotalPages()}-1?'page-link':'page-link disabled'"
-                           th:href="${page.getNumber()} lt ${page.getTotalPages()}-1?'?page=' + (${page.getNumber()}+1) + '&size=' + ${page.getSize()}:''"
+                           th:href="${page.getNumber()} lt ${page.getTotalPages()}-1?'?page=' + (${page.getNumber()}+1) + '&size=' + ${page.getSize()} + (${parameter}?${parameter}:''):''"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -39,7 +39,7 @@
                                                  th:if="${c}==${page.getSize()}"></a>
                         </li>
                         <li class="page-item"><a class="page-link"
-                                                 th:href="'?page=0&size=' + ${c}"
+                                                 th:href="'?page=0&size=' + ${c} + (${parameter}?${parameter}:'')"
                                                  th:text="${c}" th:unless="${c}==${page.getSize()}"></a></li>
                     </div>
                 </ul>

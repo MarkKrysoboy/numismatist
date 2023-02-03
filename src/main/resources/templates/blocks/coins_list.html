@@ -17,11 +17,8 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${coin.name != null} ? ${coin.name} : 'Error!!!'">Card title</h5>
-                    <span th:if="${coin.series != null}">Серия: <a th:href="'main/series?series='+${coin.series.seriesName}" th:text="${coin.series.seriesName}"></a></span>
-<!--                    <form th:method="post" th:action="'main?series=' + ${coin.series.seriesName}" class="form-test" th:if="${coin.series != null}">-->
-<!--                        <input name="series" type="hidden" th:value="${coin.series.seriesName}">-->
-<!--                        <h6>Серия: <input type="submit" th:value="${coin.series.seriesName}"></h6>-->
-<!--                    </form>-->
+                    <span th:if="${coin.series != null}">Серия: <a th:href="'main?series='+${coin.series.seriesName}"
+                                                                   th:text="${coin.series.seriesName}"></a></span>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"
