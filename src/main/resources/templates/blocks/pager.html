@@ -17,7 +17,7 @@
                                th:text="${p != -1}?${p}:'...'"
                                th:if="(${p}-1)==${page.getNumber()}"></a>
                         </li>
-                        <li class="page-item">
+                        <li class="page-item" th:unless="${p}==0">
                             <a th:class="${p == -1}?'page-link disabled':'page-link'"
                                th:href="'?page=' + (${p}-1) + '&size=' + ${page.getSize()} + (${parameter}?${parameter}:'')"
                                th:text="${p != -1}?${p}:'...'" th:unless="(${p}-1)==${page.getNumber()}"></a>

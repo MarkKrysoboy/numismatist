@@ -75,32 +75,9 @@ public class MainController {
         return "main";
     }
 
-//    @GetMapping("/main/series")
-//    public String seriesCoins(Model model,
-//                              @RequestParam(required = false) String series,
-//                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable) {
-//        Page<Coin> page = coinRepo.findBySeries(seriesRepo.findBySeriesName(series), pageable);
-//        model.addAttribute("page", page);
-//        model.addAttribute("parameter", "&series=" + series);
-//        model.addAttribute("pagesList", coinService.pagesList(page));
-//        return "main";
-//    }
-
     @GetMapping("main/{catalogNumber}")
     public String coinCatalogNumber(Model model, @PathVariable String catalogNumber) {
         model.addAttribute("coin", coinRepo.findByCatalogNumber(catalogNumber));
         return "coin";
     }
-
-//    @PostMapping("main")
-//    public String filterCoins(
-//            Model model,
-//            @RequestParam(required = false) String series,
-//            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable
-//    ) {
-//        getPage(model, series, pageable);
-//        return "main";
-//    }
-
-
 }

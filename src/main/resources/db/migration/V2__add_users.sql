@@ -1,0 +1,2 @@
+insert into users (id, password, username, active)  values (1, '$2a$12$sTGX0ykXT03Ji.orplSGoud6mMtl/2JxhQHZ13Ctp6IcdBRFhAG6K', 'admin', true);
+insert into user_role (user_id, roles)  values (1, 'USER'), (1, 'ADMIN');

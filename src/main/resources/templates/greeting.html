@@ -1,7 +1,8 @@
-<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template">
+<div layout:fragment="content" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="blocks/template"
+     xmlns:sec="http://www.w3.org/1999/xhtml">
 
-    <h5>Hello, guest</h5>
+    <h5>Hello, <span sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></span><span sec:authorize="!isAuthenticated()">Guest</span></h5>
     <div>Welcome in app Numismatist</div>
-    <a href="/login">Login</a>
+    <a sec:authorize="!isAuthenticated()" href="/login">Login</a>
 
 </div>
