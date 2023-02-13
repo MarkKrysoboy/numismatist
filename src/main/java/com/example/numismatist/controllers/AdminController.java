@@ -1,12 +1,9 @@
 package com.example.numismatist.controllers;
 
-import com.example.numismatist.enteties.Coin;
-import com.example.numismatist.enteties.Coinage;
 import com.example.numismatist.enteties.User;
 import com.example.numismatist.repositories.CoinRepo;
-import com.example.numismatist.services.LoadFromFileService;
 import com.example.numismatist.services.LoadFromBankPageService;
-import org.jsoup.nodes.Document;
+import com.example.numismatist.services.LoadFromFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/main")

@@ -6,11 +6,17 @@ services:
     container_name: 'java-postgres'
     environment:
       - 'POSTGRES_USER=postgres'
-      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+      - 'POSTGRES_PASSWORD=sql'
       - 'POSTGRES_DB=numis'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
 
   app:
     build: ./
     container_name: 'java-app'
     ports:
       - 8080:8080
+    volumes:
+      - ./src/main/resources/static/images:/src/main/resources/static/images
+    extra_hosts:
+      - "cbr.ru:185.178.208.7"
