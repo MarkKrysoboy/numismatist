@@ -1,3 +1,4 @@
 FROM openjdk:19
-COPY ./target/numismatist-0.0.1-SNAPSHOT.jar numismatist.jar
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} numismatist.jar
 ENTRYPOINT ["java", "-jar", "numismatist.jar"]
